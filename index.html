@@ -1,325 +1,90 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Crystal Rush</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>Crystal Rush Arena</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{
- background:linear-gradient(135deg,#0b1020,#111827);
- font-family:Arial,sans-serif;
- color:#fff;
- display:flex;
- justify-content:center;
- align-items:center;
- height:100vh;
- overflow:hidden;
-}
-#game{
- width:min(95vw,430px);
- height:min(95vh,900px);
- background:#111827;
- border-radius:28px;
- padding:18px;
- box-shadow:0 0 50px rgba(0,0,0,.5);
-}
-h1{text-align:center;font-size:48px;margin-bottom:12px}
-#scorebar{
- display:flex;
- justify-content:space-between;
- margin-bottom:12px;
-}
-.pill{
- background:#1f2937;
- padding:10px 16px;
- border-radius:18px;
- font-weight:bold;
-}
-#rush{
- width:100%;
- height:18px;
- background:#1f2937;
- border-radius:999px;
- margin-bottom:16px;
- overflow:hidden;
-}
-#rushFill{
- width:0%;
- height:100%;
- background:linear-gradient(90deg,cyan,purple,pink);
-}
-#board{
- position:relative;
- width:100%;
- aspect-ratio:1;
-}
-.cell{
- position:absolute;
- width:48px;
- height:48px;
- transform:rotate(45deg);
- border-radius:10px;
- background:#1e293b;
-}
-.filled{
- background:linear-gradient(135deg,var(--c1),var(--c2));
- box-shadow:0 0 16px var(--c1);
-}
-#inventory{
- display:flex;
- justify-content:space-around;
- margin-top:25px;
-}
-.slot{
- width:80px;
- height:80px;
- background:#1f2937;
- border-radius:20px;
- display:flex;
- justify-content:center;
- align-items:center;
-}
-.mini{
- width:24px;
- height:24px;
- transform:rotate(45deg);
- border-radius:6px;
- background:red;
-}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html,body{margin:0;width:100%;height:100%;overflow:hidden;font-family:Arial,Helvetica,sans-serif;background:radial-gradient(circle at 18% 10%,#243bff 0 9%,transparent 34%),radial-gradient(circle at 90% 80%,#b026ff 0 12%,transparent 36%),linear-gradient(145deg,#050612,#0a1028 55%,#02030a);color:#fff;touch-action:none;user-select:none}.app{height:100%;display:flex;justify-content:center;align-items:center;padding:10px}.phone{width:min(96vw,450px);height:min(96vh,890px);position:relative;overflow:hidden;border-radius:34px;border:4px solid rgba(255,255,255,.18);background:linear-gradient(180deg,rgba(255,255,255,.13),rgba(255,255,255,.045));box-shadow:0 30px 80px rgba(0,0,0,.58),inset 0 0 42px rgba(255,255,255,.05)}.phone:before{content:"";position:absolute;inset:-40%;background:conic-gradient(from 0deg,transparent,rgba(34,211,238,.22),transparent,rgba(244,114,182,.18),transparent);animation:spin 9s linear infinite;pointer-events:none}@keyframes spin{to{transform:rotate(360deg)}}.screen{position:absolute;inset:0;display:none;flex-direction:column;padding:18px;z-index:1}.screen.show{display:flex}.title{font-size:45px;line-height:.88;font-weight:1000;text-shadow:0 5px 0 rgba(0,0,0,.32),0 0 32px rgba(168,85,247,.42)}.sub{margin-top:8px;font-weight:900;opacity:.78}.hero{flex:1;display:flex;flex-direction:column;justify-content:center;gap:14px}.logoBox{height:270px;border-radius:30px;border:2px solid rgba(255,255,255,.18);background:radial-gradient(circle at 50% 60%,rgba(34,211,238,.17),transparent 45%),linear-gradient(180deg,rgba(255,255,255,.14),rgba(255,255,255,.05));position:relative;overflow:hidden}.gem{position:absolute;width:64px;height:70px;clip-path:polygon(50% 0,92% 22%,76% 100%,24% 100%,8% 22%);background:linear-gradient(145deg,var(--a),var(--b));filter:drop-shadow(0 0 18px var(--a));animation:float 3s ease-in-out infinite}.gem:nth-child(1){left:35px;top:50px;--a:#22d3ee;--b:#2563eb}.gem:nth-child(2){left:155px;top:75px;--a:#f472b6;--b:#be185d;animation-delay:.25s}.gem:nth-child(3){right:42px;top:42px;--a:#a78bfa;--b:#7c3aed;animation-delay:.55s}.gem:nth-child(4){left:80px;bottom:52px;--a:#fde047;--b:#f97316;animation-delay:.9s}.gem:nth-child(5){right:88px;bottom:64px;--a:#4ade80;--b:#15803d;animation-delay:1.15s}@keyframes float{50%{transform:translateY(-18px) rotate(8deg)}}button{border:0;border-radius:22px;padding:15px 18px;font-size:18px;font-weight:1000;color:#fff;background:linear-gradient(180deg,#a78bfa,#7c3aed);box-shadow:0 8px 0 #4c1d95,0 16px 30px rgba(0,0,0,.28);cursor:pointer}button:active{transform:translateY(5px);box-shadow:0 3px 0 #4c1d95}.btn2{background:linear-gradient(180deg,#5eead4,#06b6d4);box-shadow:0 8px 0 #0e7490}.top{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:7px;margin-bottom:9px}.pill{background:rgba(255,255,255,.13);border:2px solid rgba(255,255,255,.18);border-radius:18px;padding:8px 8px;text-align:center;font-weight:1000}.pill small{display:block;font-size:9px;opacity:.65}.rushBox{height:20px;border-radius:999px;background:rgba(255,255,255,.12);border:2px solid rgba(255,255,255,.15);overflow:hidden;margin-bottom:10px}.rushFill{height:100%;width:0;background:linear-gradient(90deg,#22d3ee,#a78bfa,#f472b6);box-shadow:0 0 22px rgba(244,114,182,.62);transition:.22s}.arenaWrap{position:relative;flex:1;min-height:0;border-radius:30px;border:3px solid rgba(255,255,255,.16);background:radial-gradient(circle at 50% 44%,rgba(168,85,247,.18),transparent 42%),linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.025));box-shadow:0 18px 50px rgba(0,0,0,.38),inset 0 0 35px rgba(255,255,255,.06);overflow:hidden}canvas{display:block;width:100%;height:100%;touch-action:none}.danger{position:absolute;left:0;right:0;top:86px;border-top:3px dashed rgba(255,80,125,.6);pointer-events:none}.danger:after{content:"DANGER";position:absolute;right:12px;top:4px;font-size:10px;font-weight:1000;color:rgba(255,170,190,.75)}.comboText{position:absolute;left:0;right:0;top:42%;text-align:center;font-size:34px;font-weight:1000;pointer-events:none;opacity:0;transform:scale(.7);text-shadow:0 5px 0 rgba(0,0,0,.35);z-index:8}.comboText.show{animation:comboPop .9s ease}@keyframes comboPop{0%{opacity:0;transform:scale(.6)}25%{opacity:1;transform:scale(1.12)}100%{opacity:0;transform:scale(1.45) translateY(-35px)}}.overlay{position:absolute;inset:0;background:rgba(0,0,0,.74);backdrop-filter:blur(5px);display:none;align-items:center;justify-content:center;text-align:center;padding:24px;z-index:20}.overlay.show{display:flex}.card{width:100%;max-width:330px;background:#171b33;border:2px solid rgba(255,255,255,.18);border-radius:27px;padding:24px;box-shadow:0 25px 60px rgba(0,0,0,.45)}.card h2{font-size:34px;margin:0 0 8px}.shake{animation:shake .2s ease}@keyframes shake{25%{transform:translateX(5px)}50%{transform:translateX(-5px)}75%{transform:translateX(3px)}}
 </style>
 </head>
 <body>
-<div id="game">
-<h1>CRYSTAL RUSH</h1>
-
-<div id="scorebar">
-<div class="pill">Score: <span id="score">0</span></div>
-<div class="pill">Chain: <span id="chain">0</span></div>
-</div>
-
-<div id="rush"><div id="rushFill"></div></div>
-
-<div id="board"></div>
-
-<div id="inventory">
-<div class="slot" id="slot0"></div>
-<div class="slot" id="slot1"></div>
-<div class="slot" id="slot2"></div>
-</div>
-
+<div class="app"><div class="phone" id="phone">
+<section class="screen show" id="menu">
+<div><div class="title">CRYSTAL<br>RUSH ARENA</div><div class="sub">2.5D crystal physics + merge combo arena.</div></div>
+<div class="hero"><div class="logoBox"><div class="gem"></div><div class="gem"></div><div class="gem"></div><div class="gem"></div><div class="gem"></div></div><button id="playBtn">OYNA</button><button class="btn2" id="howBtn">NASIL OYNANIR?</button></div>
+<div class="pill">REKOR: <b id="bestMenu">0</b></div>
+</section>
+<section class="screen" id="gameScreen">
+<div class="top"><div class="pill"><small>SKOR</small><b id="score">0</b></div><div class="pill"><small>COMBO</small><b id="combo">0</b></div><div class="pill"><small>REKOR</small><b id="best">0</b></div><button id="menuBtn" style="font-size:13px;padding:9px 10px;border-radius:15px">MENÜ</button></div>
+<div class="rushBox"><div class="rushFill" id="rushFill"></div></div>
+<div class="arenaWrap" id="arenaWrap"><canvas id="game"></canvas><div class="danger"></div><div class="comboText" id="comboText">MERGE!</div></div>
+</section>
+<div class="overlay" id="how"><div class="card"><h2>Nasıl?</h2><p>Parmağını sağ-sol kaydır, kristali bırak. Aynı seviye ve aynı element kristaller çarpışınca birleşir. Rush bar dolunca ortadaki çekirdek alan patlatır.</p><button onclick="hideHow()">TAMAM</button></div></div>
+<div class="overlay" id="over"><div class="card"><h2>Game Over</h2><p>Skor: <b id="finalScore">0</b></p><button onclick="restart()">TEKRAR OYNA</button><br><br><button class="btn2" onclick="goMenu()">MENÜ</button></div></div>
+</div></div>
 <script>
-  const boardEl=document.getElementById("board");
-const scoreEl=document.getElementById("score");
-const chainEl=document.getElementById("chain");
-const rushFill=document.getElementById("rushFill");
+const canvas=document.getElementById('game'),ctx=canvas.getContext('2d'),wrap=document.getElementById('arenaWrap'),phone=document.getElementById('phone');
+const scoreEl=document.getElementById('score'),comboEl=document.getElementById('combo'),bestEl=document.getElementById('best'),bestMenu=document.getElementById('bestMenu'),rushFill=document.getElementById('rushFill'),comboText=document.getElementById('comboText'),overEl=document.getElementById('over');
+let W=400,H=600,crystals=[],particles=[],score=0,combo=0,rush=0,best=+localStorage.getItem('craBest')||0,next=null,aimX=200,running=false,over=false,canDrop=true,danger=0,audioCtx=null;
+bestEl.textContent=best;bestMenu.textContent=best;
+const elements=[['#22d3ee','#2563eb'],['#f472b6','#be185d'],['#a78bfa','#7c3aed'],['#fde047','#f97316'],['#4ade80','#15803d']];
 
-const N=7;
-let board=[];
-let score=0;
-let chain=0;
-let rush=0;
+function resize(){const r=wrap.getBoundingClientRect();const d=Math.min(devicePixelRatio||1,2);W=Math.floor(r.width);H=Math.floor(r.height);canvas.width=W*d;canvas.height=H*d;ctx.setTransform(d,0,0,d,0,0);aimX=W/2}
+addEventListener('resize',resize);
 
-const colors=[
- ["#22d3ee","#2563eb"],
- ["#f472b6","#be185d"],
- ["#a78bfa","#7c3aed"],
- ["#fde047","#f97316"],
- ["#4ade80","#15803d"]
-];
+function initAudio(){if(!audioCtx)audioCtx=new (window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==='suspended')audioCtx.resume()}
+function beep(f=440,d=.08,t='sine',g=.04){try{initAudio();let o=audioCtx.createOscillator(),gain=audioCtx.createGain();o.type=t;o.frequency.value=f;gain.gain.value=g;o.connect(gain);gain.connect(audioCtx.destination);gain.gain.exponentialRampToValueAtTime(.0001,audioCtx.currentTime+d);o.start();o.stop(audioCtx.currentTime+d)}catch(e){}}
+function sound(n){if(n==='drop'){beep(260,.05,'square',.035);setTimeout(()=>beep(460,.05,'triangle',.025),25)}if(n==='merge')[420,660,940].forEach((f,i)=>setTimeout(()=>beep(f,.08,'triangle',.045),i*38));if(n==='rush')[520,740,980,1240,1480].forEach((f,i)=>setTimeout(()=>beep(f,.08,'sine',.04),i*45));if(n==='over')[220,160,110].forEach((f,i)=>setTimeout(()=>beep(f,.14,'sawtooth',.035),i*90))}
+function shake(){phone.classList.remove('shake');void phone.offsetWidth;phone.classList.add('shake')}
+function rad(l){return 17+l*4.7}
+function makeNext(){let max=Math.min(2,Math.floor(score/250));next={el:Math.floor(Math.random()*elements.length),lv:Math.floor(Math.random()*(max+1)),r:rad(0),spin:0}}
+function start(){resize();crystals=[];particles=[];score=0;combo=0;rush=0;danger=0;over=false;running=true;canDrop=true;makeNext();updateHud();overEl.classList.remove('show')}
+function updateHud(){scoreEl.textContent=score;comboEl.textContent=combo;bestEl.textContent=best;bestMenu.textContent=best;rushFill.style.width=Math.min(100,rush)+'%'}
+function pointerX(e){let r=canvas.getBoundingClientRect(),p=e.touches?e.touches[0]:e;return Math.max(28,Math.min(W-28,p.clientX-r.left))}
 
-function inDiamond(x,y){
- const c=Math.floor(N/2);
- return Math.abs(x-c)+Math.abs(y-c)<=c;
+canvas.addEventListener('pointermove',e=>{aimX=pointerX(e)});
+canvas.addEventListener('pointerdown',e=>{initAudio();aimX=pointerX(e)});
+canvas.addEventListener('pointerup',e=>drop());
+canvas.addEventListener('touchmove',e=>{aimX=pointerX(e);e.preventDefault()},{passive:false});
+canvas.addEventListener('touchend',e=>drop());
+
+function drop(){if(!running||over||!canDrop)return;let r=rad(next.lv);crystals.push({x:Math.max(r+14,Math.min(W-r-14,aimX)),y:60-r,vx:0,vy:0,el:next.el,lv:next.lv,r,spin:Math.random()*6,vs:(Math.random()-.5)*.12,dead:false,scale:.45});sound('drop');makeNext();canDrop=false;setTimeout(()=>canDrop=true,290)}
+
+function drawCrystal(c,alpha=1){
+ let col=elements[c.el];ctx.save();ctx.translate(c.x,c.y);ctx.rotate(c.spin);ctx.scale(c.scale||1,c.scale||1);ctx.globalAlpha=alpha;ctx.shadowColor=col[0];ctx.shadowBlur=14+c.lv*3;let r=c.r;let grd=ctx.createLinearGradient(-r,-r,r,r);grd.addColorStop(0,'#fff');grd.addColorStop(.18,col[0]);grd.addColorStop(1,col[1]);ctx.fillStyle=grd;ctx.strokeStyle='rgba(255,255,255,.55)';ctx.lineWidth=2.5;ctx.beginPath();ctx.moveTo(0,-r*1.12);ctx.lineTo(r*.86,-r*.32);ctx.lineTo(r*.58,r*1.02);ctx.lineTo(-r*.58,r*1.02);ctx.lineTo(-r*.86,-r*.32);ctx.closePath();ctx.fill();ctx.stroke();ctx.shadowBlur=0;ctx.fillStyle='rgba(255,255,255,.38)';ctx.beginPath();ctx.ellipse(-r*.25,-r*.35,r*.23,r*.12,-.5,0,Math.PI*2);ctx.fill();ctx.fillStyle='rgba(0,0,0,.25)';ctx.font=`900 ${Math.max(10,r*.55)}px Arial`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(c.lv+1,0,r*.18);ctx.restore()
 }
 
-function initBoard(){
- board=Array.from({length:N},()=>Array(N).fill(null));
- drawBoard();
+function particle(x,y,color,n=18){for(let i=0;i<n;i++){particles.push({x,y,vx:(Math.random()-.5)*7,vy:(Math.random()-.5)*7-2,life:1,col:color,s:3+Math.random()*5})}}
+
+function physics(){
+ for(let c of crystals){c.vy+=.48;c.vx*=.992;c.vy*=.999;c.x+=c.vx;c.y+=c.vy;c.spin+=c.vs;c.scale=Math.min(1,c.scale+.1);if(c.x-c.r<13){c.x=13+c.r;c.vx*=-.42}if(c.x+c.r>W-13){c.x=W-13-c.r;c.vx*=-.42}if(c.y+c.r>H-15){c.y=H-15-c.r;c.vy*=-.28;c.vx*=.82}}
+ for(let k=0;k<4;k++){for(let i=0;i<crystals.length;i++)for(let j=i+1;j<crystals.length;j++){let a=crystals[i],b=crystals[j];if(a.dead||b.dead)continue;let dx=b.x-a.x,dy=b.y-a.y,d=Math.hypot(dx,dy)||.001,min=a.r+b.r;if(d<min){let nx=dx/d,ny=dy/d,ov=(min-d)/2;a.x-=nx*ov;b.x+=nx*ov;a.y-=ny*ov;b.y+=ny*ov;if(a.el===b.el&&a.lv===b.lv&&a.lv<8&&Math.abs(a.vy)+Math.abs(b.vy)<18){merge(a,b);continue}let rel=(b.vx-a.vx)*nx+(b.vy-a.vy)*ny;if(rel<0){let imp=-(1+.22)*rel/2;a.vx-=imp*nx;a.vy-=imp*ny;b.vx+=imp*nx;b.vy+=imp*ny}}}}
+ crystals=crystals.filter(c=>!c.dead);
+ for(let p of particles){p.vy+=.12;p.x+=p.vx;p.y+=p.vy;p.life-=.025}
+ particles=particles.filter(p=>p.life>0);
+ let bad=crystals.some(c=>c.y-c.r<88&&Math.abs(c.vy)<1);
+ danger=bad?danger+1:Math.max(0,danger-2);
+ if(danger>130)gameOver()
 }
 
-function drawBoard(){
- boardEl.innerHTML="";
- const size=100/N;
+function merge(a,b){a.dead=b.dead=true;let lv=a.lv+1,r=rad(lv),x=(a.x+b.x)/2,y=(a.y+b.y)/2;crystals.push({x,y,vx:(a.vx+b.vx)/3,vy:-3.8,el:a.el,lv,r,spin:0,vs:(Math.random()-.5)*.16,dead:false,scale:1.35});combo++;score+=(lv+1)*45*combo;rush+=10+lv*4;particle(x,y,elements[a.el][0],24);sound('merge');showCombo(lv);shake();if(rush>=100)rushBlast();updateHud()}
 
- for(let y=0;y<N;y++){
-  for(let x=0;x<N;x++){
-   if(!inDiamond(x,y)) continue;
+function rushBlast(){rush=0;sound('rush');shake();showCombo('RUSH BLAST');let cx=W/2,cy=H*.45;particle(cx,cy,'#f472b6',55);for(let c of crystals){let d=Math.hypot(c.x-cx,c.y-cy);if(d<150){c.vx+=(c.x-cx)/Math.max(d,1)*8;c.vy+=(c.y-cy)/Math.max(d,1)*8-4;score+=25}}updateHud()}
+function showCombo(t){comboText.textContent=typeof t==='string'?t:`MERGE x${combo}`;comboText.classList.remove('show');void comboText.offsetWidth;comboText.classList.add('show')}
+function gameOver(){if(over)return;over=true;running=false;best=Math.max(best,score);localStorage.setItem('craBest',best);document.getElementById('finalScore').textContent=score;overEl.classList.add('show');sound('over');updateHud()}
 
-   const cell=document.createElement("div");
-   cell.className="cell";
-   cell.style.left=`calc(${x*size}% + 3px)`;
-   cell.style.top=`calc(${y*size}% + 3px)`;
+function draw(){ctx.clearRect(0,0,W,H);let grd=ctx.createRadialGradient(W/2,H*.35,10,W/2,H*.5,W*.75);grd.addColorStop(0,'rgba(168,85,247,.18)');grd.addColorStop(1,'rgba(0,0,0,0)');ctx.fillStyle=grd;ctx.fillRect(0,0,W,H);ctx.strokeStyle='rgba(255,255,255,.13)';ctx.lineWidth=8;ctx.beginPath();ctx.moveTo(16,86);ctx.lineTo(16,H-18);ctx.lineTo(W-16,H-18);ctx.lineTo(W-16,86);ctx.stroke();ctx.fillStyle=`rgba(255,60,105,${Math.min(.22,danger/420)})`;ctx.fillRect(0,0,W,88);if(running&&!over&&canDrop&&next){let ghost={x:aimX,y:58,r:rad(next.lv),el:next.el,lv:next.lv,spin:0,scale:.75};drawCrystal(ghost,.72);ctx.setLineDash([6,7]);ctx.strokeStyle='rgba(255,255,255,.25)';ctx.beginPath();ctx.moveTo(aimX,90);ctx.lineTo(aimX,H-20);ctx.stroke();ctx.setLineDash([])}for(let c of crystals)drawCrystal(c);ctx.save();ctx.globalCompositeOperation='lighter';for(let p of particles){ctx.globalAlpha=p.life;ctx.fillStyle=p.col;ctx.fillRect(p.x,p.y,p.s,p.s)}ctx.restore();requestAnimationFrame(draw)}
+function loop(){if(running&&!over)physics();requestAnimationFrame(loop)}
+function restart(){start()}
+function goMenu(){overEl.classList.remove('show');document.getElementById('gameScreen').classList.remove('show');document.getElementById('menu').classList.add('show');running=false}
+function hideHow(){document.getElementById('how').classList.remove('show')}
 
-   if(board[y][x]!==null){
-    cell.classList.add("filled");
-    cell.style.setProperty("--c1",colors[board[y][x]][0]);
-    cell.style.setProperty("--c2",colors[board[y][x]][1]);
-   }
+document.getElementById('playBtn').onclick=()=>{initAudio();document.getElementById('menu').classList.remove('show');document.getElementById('gameScreen').classList.add('show');start()};
+document.getElementById('menuBtn').onclick=goMenu;
+document.getElementById('howBtn').onclick=()=>document.getElementById('how').classList.add('show');
 
-   cell.onclick=()=>placeCrystal(x,y);
-   boardEl.appendChild(cell);
-  }
- }
-}
-
-function placeCrystal(x,y){
- if(board[y][x]!==null) return;
-
- const color=Math.floor(Math.random()*colors.length);
- board[y][x]=color;
-
- score+=5;
- scoreEl.textContent=score;
-
- resolveMerges();
- drawBoard();
-}
-
-function neighbors(x,y){
- return [
-  [x+1,y],
-  [x-1,y],
-  [x,y+1],
-  [x,y-1]
- ].filter(([nx,ny]) =>
-   nx>=0&&nx<N&&ny>=0&&ny<N&&inDiamond(nx,ny)
- );
-}
-
-function findGroups(){
- let seen=Array.from({length:N},()=>Array(N).fill(false));
- let groups=[];
-
- for(let y=0;y<N;y++){
-  for(let x=0;x<N;x++){
-   if(!inDiamond(x,y)) continue;
-   if(board[y][x]===null||seen[y][x]) continue;
-
-   let color=board[y][x];
-   let stack=[[x,y]];
-   let group=[];
-   seen[y][x]=true;
-
-   while(stack.length){
-    let [cx,cy]=stack.pop();
-    group.push([cx,cy]);
-
-    for(const [nx,ny] of neighbors(cx,cy)){
-     if(!seen[ny][nx] && board[ny][nx]===color){
-      seen[ny][nx]=true;
-      stack.push([nx,ny]);
-     }
-    }
-   }
-
-   if(group.length>=4){
-    groups.push(group);
-   }
-  }
- }
- return groups;
-}
-
-function resolveMerges(){
- const groups=findGroups();
-
- if(groups.length===0){
-  chain=0;
-  chainEl.textContent=chain;
-  return;
- }
-
- chain++;
- chainEl.textContent=chain;
-
- groups.forEach(group=>{
-  const mid=group[Math.floor(group.length/2)];
-
-  group.forEach(([x,y])=>{
-   board[y][x]=null;
-  });
-
-  board[mid[1]][mid[0]]=Math.floor(Math.random()*colors.length);
-
-  score+=group.length*20*chain;
-  rush+=group.length*6;
- });
-
- scoreEl.textContent=score;
- rushFill.style.width=Math.min(rush,100)+"%";
-
- if(rush>=100){
-  rushBlast();
- }
-
- setTimeout(()=>{
-  drawBoard();
-  resolveMerges();
- },200);
-}
-
-  
-function rushBlast(){
- rush=0;
- rushFill.style.width="0%";
-
- const center=Math.floor(N/2);
-
- for(let y=0;y<N;y++){
-  for(let x=0;x<N;x++){
-   if(!inDiamond(x,y)) continue;
-
-   const dist=Math.abs(x-center)+Math.abs(y-center);
-
-   if(dist<=2){
-    if(board[y][x]!==null){
-      board[y][x]=null;
-      score+=30;
-    }
-   }
-  }
- }
-
- scoreEl.textContent=score;
- drawBoard();
-}
-
-function hasMoves(){
- for(let y=0;y<N;y++){
-  for(let x=0;x<N;x++){
-   if(!inDiamond(x,y)) continue;
-   if(board[y][x]===null) return true;
-  }
- }
- return false;
-}
-
-function gameOver(){
- alert("Game Over! Score: " + score);
- restart();
-}
-
-function restart(){
- score=0;
- chain=0;
- rush=0;
-
- scoreEl.textContent=0;
- chainEl.textContent=0;
- rushFill.style.width="0%";
-
- initBoard();
-}
-
-initBoard();
-
-setInterval(()=>{
- if(!hasMoves()){
-   gameOver();
- }
-},500);
-
+resize();makeNext();draw();loop();
 </script>
 </body>
 </html>
